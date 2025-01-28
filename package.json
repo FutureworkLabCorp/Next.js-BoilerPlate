@@ -9,7 +9,9 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "dotenv -c production -- drizzle-kit migrate",
     "db:studio": "dotenv -c production -- drizzle-kit studio",
-    "prepare": "husky"
+    "prepare": "husky",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "keywords": [],
   "author": "",
@@ -37,6 +39,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.1.0",
+    "@chromatic-com/storybook": "^3.2.4",
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
     "@commitlint/cz-commitlint": "^19.6.1",
@@ -44,6 +47,13 @@
     "@next/bundle-analyzer": "^15.1.6",
     "@next/eslint-plugin-next": "^15.1.6",
     "@playwright/test": "^1.50.0",
+    "@storybook/addon-essentials": "^8.5.2",
+    "@storybook/addon-interactions": "^8.5.2",
+    "@storybook/addon-onboarding": "^8.5.2",
+    "@storybook/blocks": "^8.5.2",
+    "@storybook/nextjs": "^8.5.2",
+    "@storybook/react": "^8.5.2",
+    "@storybook/test": "^8.5.2",
     "@tailwindcss/postcss": "^4.0.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
@@ -60,6 +70,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-playwright": "^2.2.0",
     "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-storybook": "^0.11.2",
     "eslint-plugin-testing-library": "^7.1.1",
     "http-server": "^14.1.1",
     "husky": "^9.1.7",
@@ -77,5 +88,10 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.4",
     "vitest-fail-on-console": "^0.7.1"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
   }
 }
