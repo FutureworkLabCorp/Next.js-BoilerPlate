@@ -49,3 +49,7 @@ local
 
 # vercel
 .vercel
+
+# Playwright
+node_modules/
+/blob-report/
