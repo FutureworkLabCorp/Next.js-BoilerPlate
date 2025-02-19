@@ -1,10 +1,10 @@
 // storage-adapter-import-placeholder
-import {mongooseAdapter} from '@payloadcms/db-mongodb'
-
 import sharp from 'sharp' // sharp-import
 import path from 'path'
 import {buildConfig, PayloadRequest} from 'payload'
 import {fileURLToPath} from 'url'
+import { postgresAdapter } from '@payloadcms/db-postgres'
+import { s3Storage } from '@payloadcms/storage-s3' // Importing S3 storage plugin
 
 import {Categories} from './collections/Categories'
 import {Media} from './collections/Media'
@@ -17,7 +17,6 @@ import {plugins} from './plugins'
 import {defaultLexical} from '@/fields/defaultLexical'
 import {getServerSideURL} from './utilities/getURL'
 import {Products} from "@/collections/Products";
-import {uploadthingStorage} from "@payloadcms/storage-uploadthing";
 import { Events } from './collections/Events'
 
 const filename = fileURLToPath(import.meta.url)
@@ -62,24 +61,33 @@ export default buildConfig({
     },
     // This config helps us configure global or default features that the other editors can inherit
     editor: defaultLexical,
-    db: mongooseAdapter({
-        url: process.env.DATABASE_URI || '',
-    }),
+    db: postgresAdapter({
+        pool: {
+          connectionString: process.env.DATABASE_URI || '',
+        },
+      }),
     collections: [Pages, Posts, Media, Categories, Users, Products, Events],
     cors: [getServerSideURL()].filter(Boolean),
     globals: [Header, Footer],
     plugins: [
         ...plugins,
-        uploadthingStorage({
+        s3Storage({
             collections: {
-                media: true,
-                products: true,
+              media: {
+                prefix: 'media',
+              },
             },
-            options: {
-                token: process.env.UPLOADTHING_TOKEN,
-                acl: 'public-read',
+            bucket: process.env.S3_BUCKET,
+            config: {
+              forcePathStyle: true, // Important for using Supabase
+              credentials: {
+                accessKeyId: process.env.S3_ACCESS_KEY_ID,
+                secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+              },
+              region: process.env.S3_REGION,
+              endpoint: process.env.S3_ENDPOINT,
             },
-        }),
+          }),
     ],
     secret: process.env.PAYLOAD_SECRET,
     sharp,
