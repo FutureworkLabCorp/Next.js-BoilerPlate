@@ -23,7 +23,7 @@ Core features:
 - [Jobs and Scheduled Publishing](#jobs-and-scheduled-publish)
 - [Website](#website)
   
-### Development
+## Development
 
 1. First [clone the repo](#clone) if you have not done so already
 1. `cd my-project && cp .env.example .env` to copy the example environment variables
@@ -31,6 +31,29 @@ Core features:
 1. open `http://localhost:3000` to open the app in your browser
 
 That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+
+
+## Setting up Supabase
+1. Sign up or log in to Supabase at supabase.com.
+2. **Create a new project:** Name it supabase-payload, set a database password (you can generate one automatically), and choose your region (e.g., Frankfurt).
+3. **Obtain your connection string:** Once the project setup is complete, click on Connect in the upper right corner to get your PostgreSQL connection string. Copy this string—you will use it to replace the local connection string in your environment variables.
+
+### Setting Up S3 File Storage with Payload and Supabase
+ Setup a bucket in Supabase: Create a new bucket in Supabase named supabase-payload and get your credentials (access key and secret access key).
+
+1. Obtain your Supabase credentials:
+- Go to your Supabase project dashboard.
+- Navigate to Storage and create a new bucket named supabase-payload.
+- Set the bucket to either public or private based on your needs.
+- Navigate to Settings and find your endpoint, region, access key, and secret access key. Update environment variables: Add your Supabase credentials to your environment variables:
+2. Update environment variables: Add your Supabase credentials to your environment variables (.env):
+```
+S3_BUCKET=
+S3_ACCESS_KEY_ID=
+S3_SECRET_ACCESS_KEY=
+S3_REGION=
+S3_ENDPOINT=
+```
 
 ## How it works
 
@@ -162,10 +185,6 @@ Core features:
 
 Although Next.js includes a robust set of caching strategies out of the box, Payload Cloud proxies and caches all files through Cloudflare using the [Official Cloud Plugin](https://www.npmjs.com/package/@payloadcms/payload-cloud). This means that Next.js caching is not needed and is disabled by default. If you are hosting your app outside of Payload Cloud, you can easily reenable the Next.js caching mechanisms by removing the `no-store` directive from all fetch requests in `./src/app/_api` and then removing all instances of `export const dynamic = 'force-dynamic'` from pages files, such as `./src/app/(pages)/[slug]/page.tsx`. For more details, see the official [Next.js Caching Docs](https://nextjs.org/docs/app/building-your-application/caching).
 
-## Development
-
-To spin up this example locally, follow the [Quick Start](#quick-start). Then [Seed](#seed) the database with a few pages, posts, and projects.
-
 ### Working with Postgres
 
 Postgres and other SQL-based databases follow a strict schema for managing your data. In comparison to our MongoDB adapter, this means that there's a few extra steps to working with Postgres.
@@ -198,16 +217,6 @@ pnpm payload migrate
 
 This command will check for any migrations that have not yet been run and try to run them and it will keep a record of migrations that have been run in the database.
 
-### Docker
-
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
-
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
-
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
-
 ### Seed
 
 To seed the database with a few pages, posts, and projects you can click the 'seed database' link from the admin panel.
@@ -228,11 +237,11 @@ To run Payload in production, you need to build and start the Admin panel. To do
 1. Finally run `pnpm start` or `npm run start` to run Node in production and serve Payload from the `.build` directory.
 1. When you're ready to go live, see Deployment below for more details.
 
-### Deploying to Payload Cloud
+### Deploying to Payload Cloud (We haven't decided deployment service yet so this is just a optional)
 
 The easiest way to deploy your project is to use [Payload Cloud](https://payloadcms.com/new/import), a one-click hosting solution to deploy production-ready instances of your Payload apps directly from your GitHub repo.
 
-### Deploying to Vercel
+### Deploying to Vercel (We haven't decided deployment service yet so this is just a optional)
 
 This template can also be deployed to Vercel for free. You can get started by choosing the Vercel DB adapter during the setup of the template or by manually installing and configuring it:
 
@@ -288,6 +297,5 @@ Before deploying your app, you need to:
 
 You can also deploy your app manually, check out the [deployment documentation](https://payloadcms.com/docs/production/deployment) for full details.
 
-## Questions
-
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+## References
+[Setting Up Payload with Supabase for your Next.js App: A Step-by-Step Guide](https://payloadcms.com/blog/setting-up-payload-with-supabase-for-your-nextjs-app-a-step-by-step-guide)
