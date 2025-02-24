@@ -83,7 +83,7 @@ export const Pages: CollectionConfig<'pages'> = {
                             },
                         },
                     ],
-                    label: 'Content',
+                    label: 'Content', 
                 },
                 {
                     name: 'meta',
